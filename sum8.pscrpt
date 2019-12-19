@@ -1,0 +1,1967 @@
+title sum three to 8!
+author increpare
+homepage www.increpare.com
+color_palette 1
+background_color black
+
+run_rules_on_level_start
+
+norepeat_action
+
+========
+OBJECTS
+========
+
+Background
+black
+
+wall
+darkgray
+
+spawn 
+transparent
+
+player p
+white
+00...
+0....
+.....
+0....
+00...
+
+
+player_r 
+white
+...00
+....0
+.....
+....0
+...00
+
+
+deadplayer 
+gray
+00...
+0....
+.....
+0....
+00...
+
+
+deadplayer_r 
+gray
+...00
+....0
+.....
+....0
+...00
+
+k1 1
+red darkred
+11111
+11111
+11011
+11111
+11111
+
+
+k2 2
+green darkgreen
+11111
+11101
+11111
+10111
+11111
+
+
+k3 3
+yellow lightbrown
+11111
+11101
+11011
+10111
+11111
+
+
+
+k4 4
+brown darkbrown
+11111
+10101
+11111
+10101
+11111
+
+k5 5
+blue darkblue
+11111
+10101
+11011
+10101
+11111
+
+k6 6
+pink purple
+11111
+10101
+10101
+10101
+11111
+
+spawnfall
+transparent
+
+dokill
+black
+00000
+0...0
+0...0
+0...0
+00000
+
+dokill2
+black
+00000
+00000
+00.00
+00000
+00000
+
+tanwas
+purple
+
+
+=======
+LEGEND
+=======
+
+. = Background
+# = Wall
+? = spawn
+k = k1 or k2 or k3 or k4 or k5 or k6
+ko = k1 or k2 or k3 or k4 or k5 or k6
+
+q = k1 and player
+w = k2 and player
+e = k3 and player
+r = k4 and player
+t = k5 and player
+y = k6 and player
+
+=======
+SOUNDS
+=======
+
+
+================
+COLLISIONLAYERS
+================
+
+Background
+wall,k
+player, player_r
+deadplayer, deadplayer_r
+spawn
+spawnfall
+dokill
+dokill2
+tanwas
+
+======
+RULES
+======
+
+
+right [player deadplayer | player_r deadplayer_r ] -> [stationary player deadplayer | stationary player_r deadplayer_r ]
+
+[player_r]->[]
+
+[dokill][player]->[dokill][player spawnfall]
+[dokill2][player]->[dokill2][player spawnfall]
+
+right [action player |]->[action player deadplayer|deadplayer_r]
+
+right [action player  k1|k1]->cancel
+right [action player  k2|k2]->cancel
+right [action player  k3|k3]->cancel
+right [action player  k4|k4]->cancel
+right [action player  k5|k5]->cancel
+right [action player  k6|k6]->cancel
+right [action player  no k|no k]->cancel
+
+[> player | wall]->cancel
+right [> player ||wall]->cancel
+
+
+down [ k | no k ] -> [ > k | ] again
+[> k | wall ] -> [ k | wall ]
+[> k | stationary ko ] -> [ k | ko ]
+
+[> k ] [ player ] -> [ > k ] [ player spawnfall]
+
+[moving k] [player no spawnfall]-> [ moving k ] [ player spawnfall]
+
+[player] [? no k]->[player spawnfall] [ ? random k] again
+
+right [action player k | ko ]->[tanwas player spawnfall ko | k] again
+right [action player k | no ko ]->[tanwas player spawnfall| k] again
+right [action player no ko | k ]->[tanwas player spawnfall k | ] again
+
+
+
+[dokill2 k]->[] again
+
+[dokill k]->[dokill2 k] again
+
+
+horizontal [player no spawnfall] [ k1 | k1 | k6 ] -> [player no spawnfall] [ k1 dokill | k1 dokill | k6 dokill ]
+horizontal [player no spawnfall] [ k1 | k2 | k5 ] -> [player no spawnfall] [ k1 dokill | k2 dokill | k5 dokill ]
+horizontal [player no spawnfall] [ k1 | k3 | k4 ] -> [player no spawnfall] [ k1 dokill | k3 dokill | k4 dokill ]
+horizontal [player no spawnfall] [ k1 | k4 | k3 ] -> [player no spawnfall] [ k1 dokill | k4 dokill | k3 dokill ]
+horizontal [player no spawnfall] [ k1 | k5 | k2 ] -> [player no spawnfall] [ k1 dokill | k5 dokill | k2 dokill ]
+right [player no spawnfall] [ k1 | k6 | k1 ] -> [player no spawnfall] [ k1 dokill | k6 dokill | k1 dokill ]
+horizontal [player no spawnfall] [ k2 | k1 | k5 ] -> [player no spawnfall] [ k2 dokill | k1 dokill | k5 dokill ]
+horizontal [player no spawnfall] [ k2 | k2 | k4 ] -> [player no spawnfall] [ k2 dokill | k2 dokill | k4 dokill ]
+horizontal [player no spawnfall] [ k2 | k3 | k3 ] -> [player no spawnfall] [ k2 dokill | k3 dokill | k3 dokill ]
+right [player no spawnfall] [ k2 | k4 | k2 ] -> [player no spawnfall] [ k2 dokill | k4 dokill | k2 dokill ]
+horizontal [player no spawnfall] [ k3 | k1 | k4 ] -> [player no spawnfall] [ k3 dokill | k1 dokill | k4 dokill ]
+right [player no spawnfall] [ k3 | k2 | k3 ] -> [player no spawnfall] [ k3 dokill | k2 dokill | k3 dokill ]
+
+right [dokill][deadplayer|deadplayer_r]->[dokill][|]
+
+
+[tanwas]->[]
+
+[dokill]->again
+
+late [ spawnfall]->[]
+
+late right [ player | ] -> [ player|player_r]
+
+
+==============
+WINCONDITIONS
+==============
+
+no k
+
+=======
+LEVELS
+=======
+
+message 1+4+3=8
+message three numbers horizontally sum to eight, they vanish.
+message each level has a unique solution
+
+
+(I could solve this using my brain. a++)
+
+######
+#w4.1#
+#52.2#
+#2551#
+######
+
+(
+Lösung: (2,2) (2,0) (2,2) 
+Verhältnis2: 0.050000
+Stückzahl: 10
+Erfolg: 1
+Gesamt: 81
+Interessante: 20
+Lösungstiefe: 2
+)
+
+
+(easy)
+######
+#p...#
+#.1..#
+#13.1#
+#61.4#
+######
+
+(
+Lösung: (1,1) (2,3) 
+Verhältnis2: 0.090909
+Stückzahl: 7
+Erfolg: 1
+Gesamt: 32
+Interessante: 11
+Lösungstiefe: 1
+)
+
+
+
+(too hard?)
+######
+#w1.2#
+#25.1#
+#52.5#
+#2313#
+######
+
+(
+Lösung: (2,3) (2,1) (2,3) (2,3) 
+Verhältnis2: 0.019231
+Stückzahl: 13
+Erfolg: 1
+Gesamt: 233
+Interessante: 52
+Lösungstiefe: 3
+)
+
+
+
+######
+#t.2.#
+#1352#
+#1361#
+######
+
+(
+Lösung: (0,2) (2,2) (0,2) 
+Verhältnis2: 0.083333
+Stückzahl: 10
+Erfolg: 1
+Gesamt: 40
+Interessante: 12
+Lösungstiefe: 2
+)
+
+
+
+(not hard! but non-trivial)
+
+######
+#p4.4#
+#.2.2#
+#42.2#
+######
+
+(
+Lösung: (1,0) (2,2) 
+Verhältnis2: 0.043478
+Stückzahl: 7
+Erfolg: 1
+Gesamt: 61
+Interessante: 23
+Lösungstiefe: 1
+)
+
+
+
+######
+#e2.2#
+#23.3#
+#1334#
+######
+
+(
+Lösung: (2,1) (2,2) (2,2) 
+Verhältnis2: 0.038462
+Stückzahl: 10
+Erfolg: 1
+Gesamt: 100
+Interessante: 26
+Lösungstiefe: 2
+)
+
+
+
+message remember: solutions are unique
+
+(solvable by simplification + trial/error, mittelmäßig)
+#######
+#p2.2.#
+#.3.2.#
+#.3.33#
+#.2.33#
+#23.51#
+#######
+
+(
+Lösung: (1,0) (1,4) (2,4) (1,4) 
+Verhältnis2: 0.001404
+Stückzahl: 14
+Erfolg: 1
+Gesamt: 3131
+Interessante: 712
+Lösungstiefe: 3
+)
+
+
+
+######
+#p.42#
+#1.31#
+#2442#
+#1225#
+######
+
+(
+Lösung: (0,2) (0,2) (0,3) (0,3) 
+Verhältnis2: 0.010870
+Stückzahl: 13
+Erfolg: 1
+Gesamt: 400
+Interessante: 92
+Lösungstiefe: 3
+)
+
+
+
+######
+#p2.1#
+#2551#
+#4113#
+######
+
+(
+Lösung: (2,1) (0,2) (2,2) 
+Verhältnis2: 0.033333
+Stückzahl: 10
+Erfolg: 1
+Gesamt: 76
+Interessante: 30
+Lösungstiefe: 2
+)
+
+
+
+(pleasant to solve!)
+
+############
+#p..1..1124#
+#22.41.6225#
+############
+
+(
+Lösung: (2,1) (5,1) (6,1) (6,1) 
+Verhältnis2: 0.040000
+Stückzahl: 13
+Erfolg: 1
+Gesamt: 142
+Interessante: 25
+Lösungstiefe: 3
+)
+
+
+
+
+############
+#q.11.2....#
+#6.15.14513#
+############
+
+(
+Lösung: (6,1) (4,0) (0,1) 
+Verhältnis2: 0.013333
+Stückzahl: 12
+Erfolg: 1
+Gesamt: 420
+Interessante: 75
+Lösungstiefe: 2
+)
+
+
+
+#######
+#p..1.#
+#.5.12#
+#.1.26#
+#.3.41#
+#41225#
+#######
+
+(
+Lösung: (1,4) (1,3) (2,4) (1,4) (1,4) 
+Verhältnis2: 0.005882
+Stückzahl: 15
+Erfolg: 1
+Gesamt: 1045
+Interessante: 170
+Lösungstiefe: 4
+)
+
+
+######
+#r...#
+#1.4.#
+#3.31#
+#4.32#
+#1.13#
+#3343#
+#1243#
+######
+
+(
+Lösung: (0,0) (0,6) (0,5) (2,6) (0,6) (0,6) 
+Verhältnis2: 0.001332
+Stückzahl: 20
+Erfolg: 1
+Gesamt: 4080
+Interessante: 751
+Lösungstiefe: 5
+)
+
+
+
+(nice! not obvious but can be rationalized)
+######
+#p...#
+#33.3#
+#32.2#
+#23.3#
+######
+
+(
+Lösung: (2,1) (2,3) (2,3) 
+Verhältnis2: 0.047619
+Stückzahl: 9
+Erfolg: 1
+Gesamt: 69
+Interessante: 21
+Lösungstiefe: 2
+)
+
+
+
+(I could figure it out :) )
+
+######
+#w.2.#
+#3.32#
+#3.33#
+#2.33#
+######
+
+(
+Lösung: (1,0) (0,3) (0,3) 
+Verhältnis2: 0.013158
+Stückzahl: 11
+Erfolg: 1
+Gesamt: 225
+Interessante: 76
+Lösungstiefe: 2
+)
+
+
+#######
+#q..2.#
+#1.61.#
+#5.51.#
+#2.21.#
+#5.12.#
+#######
+
+(
+Lösung: (0,4) (0,4) (3,2) (0,4) 
+Verhältnis2: 0.004545
+Stückzahl: 14
+Erfolg: 1
+Gesamt: 1398
+Interessante: 220
+Lösungstiefe: 3
+)
+
+
+
+(hardish?)
+
+######
+#r.42#
+#2.24#
+#3223#
+######
+
+(
+Lösung: (0,1) (0,2) (0,2) 
+Verhältnis2: 0.038462
+Stückzahl: 10
+Erfolg: 1
+Gesamt: 100
+Interessante: 26
+Lösungstiefe: 2
+)
+
+
+
+(I could figure it out!)
+
+######
+#p3.4#
+#3114#
+#2442#
+######
+
+(
+Lösung: (2,1) (0,2) (2,2) 
+Verhältnis2: 0.033333
+Stückzahl: 10
+Erfolg: 1
+Gesamt: 76
+Interessante: 30
+Lösungstiefe: 2
+)
+
+
+######
+#w5.5#
+#52.1#
+#5112#
+######
+
+(
+Lösung: (2,1) (2,2) (2,2) 
+Verhältnis2: 0.038462
+Stückzahl: 10
+Erfolg: 1
+Gesamt: 101
+Interessante: 26
+Lösungstiefe: 2
+)
+
+
+(short but sweet)
+######
+#p2.2#
+#.3.3#
+#23.3#
+######
+
+(
+Lösung: (1,0) (2,2) 
+Verhältnis2: 0.043478
+Stückzahl: 7
+Erfolg: 1
+Gesamt: 61
+Interessante: 23
+Lösungstiefe: 1
+)
+
+
+
+
+
+######
+#r.41#
+#4.13#
+#1.34#
+#4331#
+######
+
+(
+Lösung: (0,2) (0,2) (0,3) (0,3) 
+Verhältnis2: 0.010526
+Stückzahl: 13
+Erfolg: 1
+Gesamt: 439
+Interessante: 95
+Lösungstiefe: 3
+)
+
+
+(hard. didn't solve self)
+######
+#e.4.#
+#3.31#
+#3241#
+#1334#
+######
+
+(
+Lösung: (0,2) (2,3) (0,3) (0,3) 
+Verhältnis2: 0.011494
+Stückzahl: 13
+Erfolg: 1
+Gesamt: 334
+Interessante: 87
+Lösungstiefe: 3
+)
+
+
+
+############
+#p.33.43..4#
+#1.43.221.3#
+############
+
+(
+Lösung: (0,1) (4,1) (8,0) 
+Verhältnis2: 0.005650
+Stückzahl: 12
+Erfolg: 1
+Gesamt: 1096
+Interessante: 177
+Lösungstiefe: 2
+)
+
+
+
+
+(too easy)
+############
+#p.....2.3.#
+#...3.33.2.#
+############
+
+(
+Lösung: (7,0) (3,1) 
+Verhältnis2: 0.200000
+Stückzahl: 6
+Erfolg: 1
+Gesamt: 31
+Interessante: 5
+Lösungstiefe: 1
+)
+
+
+
+############
+#w.23.2....#
+#3.32.3....#
+############
+
+(
+Lösung: (0,1) (4,1) 
+Verhältnis2: 0.062500
+Stückzahl: 8
+Erfolg: 1
+Gesamt: 89
+Interessante: 16
+Lösungstiefe: 1
+)
+
+
+
+
+(zu einfach)
+#########
+#p....3.#
+#..32.3.#
+#..33.2.#
+#########
+
+(
+Lösung: (4,2) (4,2) 
+Verhältnis2: 0.083333
+Stückzahl: 7
+Erfolg: 1
+Gesamt: 58
+Interessante: 12
+Lösungstiefe: 1
+)
+
+
+
+#########
+#w.2....#
+#3.33.3.#
+#3223.2.#
+#########
+
+(
+Lösung: (2,2) (0,2) (4,1) 
+Verhältnis2: 0.013333
+Stückzahl: 11
+Erfolg: 1
+Gesamt: 385
+Interessante: 75
+Lösungstiefe: 2
+)
+
+
+######
+#p3.3#
+#12.4#
+#42.2#
+#4331#
+######
+
+(
+Lösung: (2,3) (2,2) (2,1) (2,3) 
+Verhältnis2: 0.010526
+Stückzahl: 12
+Erfolg: 1
+Gesamt: 354
+Interessante: 95
+Lösungstiefe: 3
+)
+
+
+######
+#r2.4#
+#22.4#
+#42.2#
+#3223#
+######
+
+(
+Lösung: (2,2) (2,2) (2,3) (2,3) 
+Verhältnis2: 0.007042
+Stückzahl: 13
+Erfolg: 1
+Gesamt: 561
+Interessante: 142
+Lösungstiefe: 3
+)
+
+
+(try again when awake)
+#########
+#r123.4.#
+#1136.31#
+#########
+
+(
+Lösung: (2,1) (4,1) (2,1) 
+Verhältnis2: 0.023810
+Stückzahl: 11
+Erfolg: 1
+Gesamt: 186
+Interessante: 42
+Lösungstiefe: 2
+)
+
+
+
+(hardish. try solve again yourself later)
+##############
+#p4.3.11.4..4#
+#13.1441.61.3#
+##############
+
+(
+Lösung: (1,1) (3,1) (7,1) (10,1) 
+Verhältnis2: 0.002688
+Stückzahl: 15
+Erfolg: 1
+Gesamt: 2585
+Interessante: 372
+Lösungstiefe: 3
+)
+
+
+
+#########
+#w561.3.#
+#2115.14#
+#########
+
+(
+Lösung: (2,1) (4,1) (2,1) 
+Verhältnis2: 0.015385
+Stückzahl: 11
+Erfolg: 1
+Gesamt: 272
+Interessante: 65
+Lösungstiefe: 2
+)
+
+
+(ok! solved it by educated guessing)
+######
+#w.1.#
+#1.51#
+#1.21#
+#5.61#
+######
+
+(
+Lösung: (1,0) (0,3) (0,2) 
+Verhältnis2: 0.022727
+Stückzahl: 11
+Erfolg: 1
+Gesamt: 145
+Interessante: 44
+Lösungstiefe: 2
+)
+
+
+######
+#q.4.#
+#4.1.#
+#3.14#
+#3.25#
+######
+
+(
+Lösung: (0,0) (1,1) (0,3) 
+Verhältnis2: 0.020000
+Stückzahl: 10
+Erfolg: 1
+Gesamt: 174
+Interessante: 50
+Lösungstiefe: 2
+)
+
+
+
+######
+#r3.1#
+#14.4#
+#43.1#
+#4331#
+######
+
+(
+Lösung: (2,3) (2,2) (2,3) (2,2) 
+Verhältnis2: 0.009804
+Stückzahl: 13
+Erfolg: 1
+Gesamt: 445
+Interessante: 102
+Lösungstiefe: 3
+)
+
+######
+#p1.1#
+#.5.2#
+#13.4#
+#3441#
+######
+
+(
+Lösung: (0,3) (1,1) (2,3) 
+Verhältnis2: 0.016393
+Stückzahl: 11
+Erfolg: 1
+Gesamt: 215
+Interessante: 61
+Lösungstiefe: 2
+)
+
+
+
+
+
+######
+#r.4.#
+#3.1.#
+#1.34#
+#3114#
+######
+
+(
+Lösung: (2,3) (1,1) (0,3) 
+Verhältnis2: 0.011236
+Stückzahl: 11
+Erfolg: 1
+Gesamt: 302
+Interessante: 89
+Lösungstiefe: 2
+)
+
+
+
+
+######
+#p1.1#
+#16.5#
+#2551#
+#3223#
+######
+
+(
+Lösung: (2,0) (0,2) (2,3) (2,3) 
+Verhältnis2: 0.012500
+Stückzahl: 13
+Erfolg: 1
+Gesamt: 330
+Interessante: 80
+Lösungstiefe: 3
+)
+
+
+
+######
+#q3.1#
+#33.2#
+#23.3#
+#1443#
+######
+
+(
+Lösung: (2,3) (2,2) (2,2) (2,3) 
+Verhältnis2: 0.010753
+Stückzahl: 13
+Erfolg: 1
+Gesamt: 424
+Interessante: 93
+Lösungstiefe: 3
+)
+
+
+
+(one-trick level? not so good IMO...)
+########
+#p..3..#
+#32.2..#
+#32.33.#
+########
+
+(
+Lösung: (2,5) (2,5) 
+Verhältnis2: 0.111111
+Stückzahl: 8
+Erfolg: 1
+Gesamt: 47
+Interessante: 9
+Lösungstiefe: 1
+)
+
+
+########
+#p223.3#
+#.333.2#
+#.232.3#
+########
+
+(
+Lösung: (3,5) (0,4) (4,4) 
+Verhältnis2: 0.043478
+Stückzahl: 12
+Erfolg: 1
+Gesamt: 98
+Interessante: 23
+Lösungstiefe: 2
+)
+
+
+
+
+(trial and error got it first go :/)
+#######
+#p3.1.#
+#.2.3.#
+#.424.#
+#23114#
+#32234#
+#######
+
+(
+Lösung: (0,4) (3,4) (2,4) (1,4) 
+Verhältnis2: 0.001842
+Stückzahl: 17
+Erfolg: 1
+Gesamt: 2746
+Interessante: 543
+Lösungstiefe: 3
+)
+
+
+
+########
+#p.....#
+#......#
+#....3.#
+#.3.32.#
+#.3.33.#
+#32.32.#
+########
+
+(
+Lösung: (4,2) (1,5) (1,5) 
+Verhältnis2: 0.010989
+Stückzahl: 11
+Erfolg: 1
+Gesamt: 437
+Interessante: 91
+Lösungstiefe: 2
+)
+
+
+
+
+#######
+#p.3..#
+#..2.3#
+#..3.3#
+#.33.2#
+#333.2#
+#######
+
+(
+Lösung: (2,0) (3,4) (2,4) 
+Verhältnis2: 0.005882
+Stückzahl: 12
+Erfolg: 1
+Gesamt: 607
+Interessante: 170
+Lösungstiefe: 2
+)
+
+
+
+#########
+#p......#
+#.......#
+#.3.....#
+#.2.6...#
+#14.31..#
+#23132..#
+#35312.1#
+#########
+
+(
+Lösung: (2,5) (1,3) (1,6) (1,6) (5,6) 
+Verhältnis2: 0.006494
+Stückzahl: 18
+Erfolg: 1
+Gesamt: 1277
+Interessante: 154
+Lösungstiefe: 4
+)
+
+
+
+
+
+##########
+#p.......#
+#.1......#
+#.3.2....#
+#.1.52...#
+#.4.13...#
+#.1364...#
+#12145...#
+#415311.4#
+##########
+
+(
+Lösung: (3,6) (2,6) (1,5) (2,7) (2,4) (1,7) (6,7) (1,7) 
+Verhältnis2: 0.000883
+Stückzahl: 25
+Erfolg: 1
+Gesamt: 12453
+Interessante: 1133
+Lösungstiefe: 7
+)
+
+
+#########
+#p......#
+#...2...#
+#...33..#
+#.2.12..#
+#.3.51..#
+#45113..#
+#3453214#
+#########
+
+(
+Lösung: (3,6) (4,6) (1,4) (2,5) (2,6) 
+Verhältnis2: 0.002924
+Stückzahl: 21
+Erfolg: 1
+Gesamt: 2295
+Interessante: 342
+Lösungstiefe: 4
+)
+
+
+
+
+#########
+#p......#
+#.......#
+#.......#
+#..1.2..#
+#..243..#
+#2.434..#
+#3.4331.#
+#########
+
+(
+Lösung: (4,5) (2,6) (0,5) (2,5) 
+Verhältnis2: 0.011494
+Stückzahl: 14
+Erfolg: 1
+Gesamt: 637
+Interessante: 87
+Lösungstiefe: 3
+)
+
+
+#########
+#p......#
+#.......#
+#.......#
+#..3....#
+#..2....#
+#..3.2..#
+#3.333..#
+#########
+
+(
+Lösung: (2,3) (1,6) 
+Verhältnis2: 0.090909
+Stückzahl: 8
+Erfolg: 1
+Gesamt: 54
+Interessante: 11
+Lösungstiefe: 1
+)
+
+#########
+#p......#
+#.......#
+#.......#
+#.......#
+#.3.....#
+#.5.3...#
+#.221...#
+#########
+
+(
+Lösung: (0,6) (2,6) 
+Verhältnis2: 0.500000
+Stückzahl: 6
+Erfolg: 1
+Gesamt: 13
+Interessante: 2
+Lösungstiefe: 1
+)
+
+######
+#y.1.#
+#5.21#
+#5261#
+#2115#
+######
+
+(
+Lösung: (0,1) (2,2) (0,3) (0,3) 
+Verhältnis2: 0.012987
+Stückzahl: 13
+Erfolg: 1
+Gesamt: 341
+Interessante: 77
+Lösungstiefe: 3
+)
+
+
+
+######
+#p4.1#
+#13.3#
+#34.1#
+#5421#
+######
+
+(
+Lösung: (2,0) (0,3) (2,3) (2,3) 
+Verhältnis2: 0.016949
+Stückzahl: 12
+Erfolg: 1
+Gesamt: 238
+Interessante: 59
+Lösungstiefe: 3
+)
+
+
+
+(carefully I could solve it)
+
+########
+#e22343#
+#211542#
+########
+
+(
+Lösung: (2,0) (2,1) (2,1) (2,1) 
+Verhältnis2: 0.038462
+Stückzahl: 12
+Erfolg: 1
+Gesamt: 151
+Interessante: 26
+Lösungstiefe: 3
+)
+
+
+
+
+########
+#q33461#
+#415112#
+########
+
+(
+Lösung: (2,0) (2,1) (2,1) 
+Verhältnis2: 0.041667
+Stückzahl: 12
+Erfolg: 1
+Gesamt: 111
+Interessante: 24
+Lösungstiefe: 2
+)
+
+
+########
+#w54241#
+#241213#
+#253151#
+########
+
+(
+Lösung: (2,1) (2,1) (2,2) (2,2) (2,2) 
+Verhältnis2: 0.040000
+Stückzahl: 18
+Erfolg: 1
+Gesamt: 176
+Interessante: 25
+Lösungstiefe: 4
+)
+
+
+
+########
+#w44214#
+#311425#
+#311316#
+########
+
+(
+Lösung: (2,1) (2,2) (2,2) (2,2) (2,2) 
+Verhältnis2: 0.022222
+Stückzahl: 18
+Erfolg: 1
+Gesamt: 285
+Interessante: 45
+Lösungstiefe: 4
+)
+
+
+(trial+errory)
+
+########
+#q55231#
+#212442#
+########
+
+(
+Lösung: (2,0) (2,1) (2,1) 
+Verhältnis2: 0.035714
+Stückzahl: 12
+Erfolg: 1
+Gesamt: 140
+Interessante: 28
+Lösungstiefe: 2
+)
+
+
+
+########
+#e11542#
+#216411#
+#525221#
+########
+
+(
+Lösung: (2,1) (2,1) (2,1) (2,2) (2,2) 
+Verhältnis2: 0.016129
+Stückzahl: 18
+Erfolg: 1
+Gesamt: 453
+Interessante: 62
+Lösungstiefe: 4
+)
+
+
+
+########
+#q12631#
+#321324#
+#163441#
+########
+
+(
+Lösung: (2,0) (2,1) (2,1) (2,2) (2,2) 
+Verhältnis2: 0.014493
+Stückzahl: 18
+Erfolg: 1
+Gesamt: 468
+Interessante: 69
+Lösungstiefe: 4
+)
+
+
+###########
+#q13344112#
+#416222542#
+###########
+
+(
+Lösung: (5,0) (5,1) (5,1) (2,1) (2,1) 
+Verhältnis2: 0.052632
+Stückzahl: 18
+Erfolg: 1
+Gesamt: 155
+Interessante: 19
+Lösungstiefe: 4
+)
+
+
+
+
+###########
+#r15114231#
+#213216524#
+###########
+
+(
+Lösung: (5,0) (5,1) (5,1) (2,1) (2,1) 
+Verhältnis2: 0.024390
+Stückzahl: 18
+Erfolg: 1
+Gesamt: 347
+Interessante: 41
+Lösungstiefe: 4
+)
+
+
+
+
+########
+#q21334#
+#245261#
+#421232#
+########
+
+(
+Lösung: (2,0) (2,1) (2,1) (2,2) (2,2) (2,2) 
+Verhältnis2: 0.012987
+Stückzahl: 18
+Erfolg: 1
+Gesamt: 577
+Interessante: 77
+Lösungstiefe: 5
+)
+
+
+
+###########
+#r11352452#
+#112633122#
+###########
+
+(
+Lösung: (2,0) (2,1) (5,1) (5,1) 
+Verhältnis2: 0.007519
+Stückzahl: 18
+Erfolg: 1
+Gesamt: 897
+Interessante: 133
+Lösungstiefe: 3
+)
+
+
+(easy, but not consciously solved)
+########
+#q35432#
+#212315#
+########
+
+(
+Lösung: (2,0) (2,1) (2,1) 
+Verhältnis2: 0.250000
+Stückzahl: 12
+Erfolg: 1
+Gesamt: 29
+Interessante: 4
+Lösungstiefe: 2
+)
+
+
+########
+#q51441#
+#256311#
+#412322#
+########
+
+(
+Lösung: (2,1) (2,1) (2,1) (2,2) (2,2) 
+Verhältnis2: 0.083333
+Stückzahl: 18
+Erfolg: 1
+Gesamt: 81
+Interessante: 12
+Lösungstiefe: 4
+)
+
+
+
+###########
+#e13511452#
+#324342131#
+###########
+
+(
+Lösung: (5,0) (5,1) (5,1) (2,1) (2,1) 
+Verhältnis2: 0.016129
+Stückzahl: 18
+Erfolg: 1
+Gesamt: 449
+Interessante: 62
+Lösungstiefe: 4
+)
+
+
+
+#######
+#p.5..#
+#.23..#
+#124..#
+#234..#
+#123..#
+#######
+
+(
+Lösung: (2,1) 
+Verhältnis2: 1.000000
+Stückzahl: 12
+Erfolg: 1
+Gesamt: 14
+Interessante: 1
+Lösungstiefe: 0
+)
+
+
+
+
+
+(FIND THE SINGLE MATCH LEVELS)
+
+
+(trivial)
+#######
+#p....#
+#..1..#
+#.514.#
+#.3425#
+#.2122#
+#######
+
+(
+Lösung: (0,2) 
+Verhältnis2: 1.000000
+Stückzahl: 12
+Erfolg: 1
+Gesamt: 13
+Interessante: 1
+Lösungstiefe: 0
+)
+
+(trivial find the match)
+######
+#p11.#
+#.21.#
+#6165#
+#4212#
+######
+
+(
+Lösung: (2,3) 
+Verhältnis2: 1.000000
+Stückzahl: 12
+Erfolg: 1
+Gesamt: 11
+Interessante: 1
+Lösungstiefe: 0
+)
+
+########
+#p..11.#
+#..2226#
+#462114#
+########
+
+(
+Lösung: (1,2) 
+Verhältnis3: 12.000000
+Stückzahl: 12
+Erfolg: 1
+Gesamt: 8
+Interessante: 1
+Lösungstiefe: 0
+)
+
+
+
+
+######
+#p33.#
+#.31.#
+#4412#
+#2324#
+######
+
+(
+Lösung: (0,3) 
+Verhältnis3: 12.000000
+Stückzahl: 12
+Erfolg: 1
+Gesamt: 10
+Interessante: 1
+Lösungstiefe: 0
+)
+
+
+
+#######
+#p.1..#
+#.661.#
+#.2211#
+#41265#
+#######
+
+(
+Lösung: (3,3) 
+Verhältnis3: 13.000000
+Stückzahl: 13
+Erfolg: 1
+Gesamt: 11
+Interessante: 1
+Lösungstiefe: 0
+)
+
+
+
+
+######
+#p41.#
+#.41.#
+#3333#
+#3421#
+######
+
+(
+Lösung: (2,3) 
+Verhältnis3: 12.000000
+Stückzahl: 12
+Erfolg: 1
+Gesamt: 9
+Interessante: 1
+Lösungstiefe: 0
+)
+
+######
+#p34.#
+#.42.#
+#2311#
+#2433#
+######
+
+(
+Lösung: (0,3) 
+Verhältnis3: 12.000000
+Stückzahl: 12
+Erfolg: 1
+Gesamt: 10
+Interessante: 1
+Lösungstiefe: 0
+)
+
+
+######
+#p.3.#
+#.23.#
+#333.#
+#322.#
+######
+
+(
+Lösung: (2,3) 
+Verhältnis3: 9.000000
+Stückzahl: 9
+Erfolg: 1
+Gesamt: 8
+Interessante: 1
+Lösungstiefe: 0
+)
+
+
+
+######
+#p41.#
+#.41.#
+#3333#
+#3421#
+######
+
+(
+Lösung: (2,3) 
+Verhältnis3: 12.000000
+Stückzahl: 12
+Erfolg: 1
+Gesamt: 9
+Interessante: 1
+Lösungstiefe: 0
+)
+
+
+######
+#p.1.#
+#.34.#
+#433.#
+#222.#
+######
+
+(
+Lösung: (2,1) 
+Verhältnis3: 9.000000
+Stückzahl: 9
+Erfolg: 1
+Gesamt: 8
+Interessante: 1
+Lösungstiefe: 0
+)
+
+
+######
+#p34.#
+#.52.#
+#1211#
+#3541#
+######
+
+(
+Lösung: (0,3) 
+Verhältnis3: 12.000000
+Stückzahl: 12
+Erfolg: 1
+Gesamt: 11
+Interessante: 1
+Lösungstiefe: 0
+)
+
+
+#######
+#p..3.#
+#..32.#
+#.223.#
+#3333.#
+#######
+
+(
+Lösung: (3,1) 
+Verhältnis3: 10.000000
+Stückzahl: 10
+Erfolg: 1
+Gesamt: 9
+Interessante: 1
+Lösungstiefe: 0
+)
+
+#######
+#p24..#
+#.232.#
+#3343.#
+#21241#
+#######
+
+(
+Lösung: (0,3) 
+Verhältnis3: 14.000000
+Stückzahl: 14
+Erfolg: 1
+Gesamt: 14
+Interessante: 1
+Lösungstiefe: 0
+)
+
+
+
+#######
+#p52..#
+#.11..#
+#.246.#
+#1132.#
+#1416.#
+#######
+
+(
+Lösung: (0,4) 
+Verhältnis3: 15.000000
+Stückzahl: 15
+Erfolg: 1
+Gesamt: 16
+Interessante: 1
+Lösungstiefe: 0
+)
+
+
+
+#######
+#p.2..#
+#.313.#
+#.534.#
+#42311#
+#######
+
+(
+Lösung: (0,3) 
+Verhältnis3: 12.000000
+Stückzahl: 12
+Erfolg: 1
+Gesamt: 13
+Interessante: 1
+Lösungstiefe: 0
+)
+
+
+#######
+#p22..#
+#.141.#
+#34343#
+#13124#
+#######
+
+(
+Lösung: (3,3) 
+Verhältnis3: 15.000000
+Stückzahl: 15
+Erfolg: 1
+Gesamt: 14
+Interessante: 1
+Lösungstiefe: 0
+)
+
+
+
+
+#######
+#p.32.#
+#.322.#
+#2441.#
+#22234#
+#######
+
+(
+Lösung: (3,3) 
+Verhältnis3: 14.000000
+Stückzahl: 14
+Erfolg: 1
+Gesamt: 11
+Interessante: 1
+Lösungstiefe: 0
+)
+
+
+
+########
+#p.13..#
+#.442..#
+#.223..#
+#.343.1#
+########
+
+(
+Lösung: (4,3) 
+Verhältnis3: 12.000000
+Stückzahl: 12
+Erfolg: 1
+Gesamt: 14
+Interessante: 1
+Lösungstiefe: 0
+)
+
+
+
+#######
+#p.4..#
+#.23..#
+#352..#
+#1312.#
+#43421#
+#######
+
+(
+Lösung: (3,4) 
+Verhältnis3: 15.000000
+Stückzahl: 15
+Erfolg: 1
+Gesamt: 16
+Interessante: 1
+Lösungstiefe: 0
+)
+
+
+
+
+#######
+#p.2..#
+#.132.#
+#.4114#
+#.4243#
+#.4324#
+#######
+
+(
+Lösung: (0,1) 
+Verhältnis3: 16.000000
+Stückzahl: 16
+Erfolg: 1
+Gesamt: 17
+Interessante: 1
+Lösungstiefe: 0
+)
+
+
+########
+#p.3...#
+#.24...#
+#24114.#
+#24324.#
+########
+
+(
+Lösung: (2,3) 
+Verhältnis3: 13.000000
+Stückzahl: 13
+Erfolg: 1
+Gesamt: 14
+Interessante: 1
+Lösungstiefe: 0
+)
+
+
+#######
+#p.4..#
+#.241.#
+#.322.#
+#32223#
+#43342#
+#######
+
+(
+Lösung: (3,4) 
+Verhältnis3: 17.000000
+Stückzahl: 17
+Erfolg: 1
+Gesamt: 14
+Interessante: 1
+Lösungstiefe: 0
+)
+
+
+#######
+#p.2..#
+#.234.#
+#.144.#
+#22312#
+#43432#
+#######
+
+(
+Lösung: (1,4) 
+Verhältnis3: 17.000000
+Stückzahl: 17
+Erfolg: 1
+Gesamt: 16
+Interessante: 1
+Lösungstiefe: 0
+)
+
+
